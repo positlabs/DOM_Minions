@@ -47,7 +47,7 @@ Also adds some methods for event handling
 
 // make a minion, handle click and touchstart events
 var minion = dom.add("div");
-minion.class = "minion";
+minion.className = "minion";
 minion.on("click touchstart", function(){console.log("hail santa!")});
 
 // add an event listener to all minions

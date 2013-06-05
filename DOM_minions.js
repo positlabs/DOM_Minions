@@ -74,7 +74,7 @@ dom.remove = function (node, fromNode) {
 			_rm(n[i]);
 		}
 		return n;
-	}
+	}else if(n == undefined)return;
 
 	throw new TypeError("node argument needs to be a Node, String, Array, or NodeList!");
 };

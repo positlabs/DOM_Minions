@@ -5,6 +5,8 @@
  *
  */
 
+// TODO - add node.css, nodeList.css
+
 (function () {
 
 	var nodeProto = Node.prototype;
@@ -57,6 +59,32 @@
 	};
 
 	/**
+	 *  tap listener gets fired only if move event isn't detected within 100ms
+	 *  @arg waitMills (optional): time to detect move event. default 100ms
+	 */
+	nodeProto.tap = function (callback, waitMillis) {
+		waitMillis = waitMillis || 100;
+		var timer;
+
+		this.addEventListener(DOWN, function (e) {
+			timer = setTimeout(function () {
+				callback(e)
+			}, 100);
+		});
+
+		this.addEventListener(MOVE, function () {
+			clearTimeout(timer);
+		});
+
+	};
+
+	nodeListProto.tap = function (callback) {
+		for (var i = 0, maxi = this.length; i < maxi; i++) {
+			this[i].tap(callback);
+		}
+	};
+
+	/**
 	 *  listens to an event once
 	 */
 	nodeProto.one = nodeListProto.one = function (eventName, callback) {
@@ -67,6 +95,9 @@
 		});
 	};
 
+	/**
+	 *  remove an event listener
+	 */
 	nodeProto.off = function (eventName, callback) {
 		var events = eventName.split(" ");
 		var i = events.length;
@@ -75,24 +106,14 @@
 		}
 	};
 
+	/**
+	 *  remove an event listener
+	 */
 	nodeListProto.off = function (eventName, callback) {
 		var i = this.length;
 		while (i--) {
 			this[i].off(eventName, callback);
 		}
-	};
-
-	nodeProto.mouseEnabled = function (v) {
-		this.style['pointer-events'] = (v) ? 'auto' : 'none';
-	};
-
-	/**
-	 *  checks opacity, display, visibility to determine if Node is visible
-	 *  @return boolean: is the view visible?
-	 */
-	nodeProto.isVisible = function () {
-		var hidden = (this.style.opacity === 0 || this.style.display == "none" || this.style.visibility == "hidden" || !document.body.contains(this));
-		return !hidden;
 	};
 
 })();

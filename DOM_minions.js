@@ -74,7 +74,7 @@ dom.remove = function (node, fromNode) {
 			_rm(n[i]);
 		}
 		return n;
-	}else if(n == undefined)return;
+	} else if (n == undefined)return;
 
 	throw new TypeError("node argument needs to be a Node, String, Array, or NodeList!");
 };
@@ -161,12 +161,18 @@ dom.clone = function (node, deep) {
 };
 
 /**
- *  @arg optNodes Array of Nodes, or NodeList to add to the fragment
+ *  @arg optNodes Array of Nodes, or NodeList, or text (xml or whatever) to add to the fragment
  *  @return: a DocumentFragment
+ *
  */
 dom.Fragment = function (optNodes) {
 	var frag = document.createDocumentFragment();
 	if (optNodes) {
+		if (typeof optNodes == "string") {
+			var div = dom.create("div", optNodes);
+			optNodes = div.childNodes;
+		}
+
 		for (var i = 0, maxi = optNodes.length; i < maxi; i++) {
 			frag.appendChild(optNodes[i]);
 		}

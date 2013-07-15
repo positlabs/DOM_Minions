@@ -5,8 +5,6 @@
  *
  */
 
-// TODO - add node.css, nodeList.css
-
 (function () {
 
 	var nodeProto = Node.prototype;
@@ -113,6 +111,23 @@
 		var i = this.length;
 		while (i--) {
 			this[i].off(eventName, callback);
+		}
+	};
+
+	/**
+	*   modify node style with a style object
+	*/
+	nodeProto.css = function(styleObject){
+		for(var s in styleObject){
+			this.style[s] = styleObject[s];
+		}
+	};
+
+	nodeListProto.css = function(styleObject){
+		for (var i = 0, maxi = this.length; i < maxi; i++) {
+			for(var s in styleObject){
+				this[i].style[s] = styleObject[s];
+			}
 		}
 	};
 

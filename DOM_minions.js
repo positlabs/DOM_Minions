@@ -22,6 +22,9 @@ dom = function (selector, optInNode) {
 	var result = inNode.querySelectorAll(selector),
 		rtn;
 	result.length > 1 ? rtn = result : rtn = result[0];
+
+	if (typeof rtn == "undefined")console.warn(selector, "not found in document");
+
 	return rtn;
 };
 

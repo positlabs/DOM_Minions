@@ -17,11 +17,11 @@
 	/**
 	 *  @arg node: node to remove. if unspecified, remove this node
 	 */
-	nodeProto.remove = nodeListProto.remove = function (node) {
+	nodeProto.rm = nodeListProto.rm = function (node) {
 		if (node) {
-			return dom.remove(node, this);
+			return dom.rm(node, this);
 		} else {
-			return dom.remove(this);
+			return dom.rm(this);
 		}
 	};
 
@@ -58,7 +58,7 @@
 
 	/**
 	 *  tap listener gets fired only if move event isn't detected within 100ms
-	 *  @arg waitMills (optional): time to detect move event. default 100ms
+	 *  @arg waitMills (optional): time allowed to detect move event that will cancel touchstart. default 100ms
 	 */
 	nodeProto.tap = function (callback, waitMillis) {
 		waitMillis = waitMillis || 100;

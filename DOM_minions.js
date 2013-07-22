@@ -54,7 +54,7 @@ dom.create = function (tagName, content) {
  *  @arg toNode: optional, removes node from this element. defaults to document.body. Can be a node or a single-element selector string.
  *  @return: Node or NodeList that was removed
  */
-dom.remove = function (node, fromNode) {
+dom.rm = function (node, fromNode) {
 	var parent = fromNode || document.body,
 		n = typeof node == "string" ? dom(node, fromNode) : node;
 
@@ -77,7 +77,9 @@ dom.remove = function (node, fromNode) {
 			_rm(n[i]);
 		}
 		return n;
-	} else if (n == undefined)return;
+	} else if (n == undefined) {
+		return;
+	}
 
 	throw new TypeError("node argument needs to be a Node, String, Array, or NodeList!");
 };
@@ -166,7 +168,6 @@ dom.clone = function (node, deep) {
 /**
  *  @arg optNodes Array of Nodes, or NodeList, or text (xml or whatever) to add to the fragment
  *  @return: a DocumentFragment
- *
  */
 dom.Fragment = function (optNodes) {
 	var frag = document.createDocumentFragment();

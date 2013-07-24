@@ -32,10 +32,11 @@ dom = function (selector, optInNode) {
 /**
  *  makes a new Element
  *  @arg tagName: type of element to create
- *  @arg content: innerHTML of the new tag, can be of type string or Node
+ *  @arg content: contents of the new tag, can be of type string or Node
+ *  @arg attributes: json-format of attributes to add to the tag
  *  @return: the newly created element
  */
-dom.create = function (tagName, content) {
+dom.create = function (tagName, content, attributes) {
 	var el = document.createElement(tagName);
 	if (content) {
 
@@ -45,6 +46,13 @@ dom.create = function (tagName, content) {
 			el.appendChild(content);
 		}
 	}
+
+	if(attributes){
+		for(var a in attributes){
+			el.setAttribute(a, attributes[a]);
+		}
+	}
+
 	return el;
 };
 
@@ -89,9 +97,10 @@ dom.rm = function (node, fromNode) {
  *  adds the node to the dom
  *  @arg node: the Node/NodeList to add, or type of Element to create
  *  @arg toNode: optional, adds Node to this Element. defaults to document.body. Can be a Node or a single-element selector string.
+ *  @arg attributes: object of attributes to apply to the element
  *  @return the Node added to the DOM
  */
-dom.add = function (node, toNode) {
+dom.add = function (node, toNode, attributes) {
 
 	var parent = toNode || document.body,
 		n = node;
@@ -104,18 +113,29 @@ dom.add = function (node, toNode) {
 		parent = dom(parent);
 	}
 
+	function _applyAttribs(el){
+		if(attributes){
+			for(var a in attributes){
+				el.setAttribute(a, attributes[a]);
+			}
+		}
+	}
+
 	// if it's a dom element, just add it
 	if (n instanceof Node) {
 		_add(n);
+		_applyAttribs(n);
 		return n;
 	} else if (typeof node == "string") {
 		n = document.createElement(n);
 		_add(n);
+		_applyAttribs(n);
 		return n;
 	} else if (n instanceof NodeList || n instanceof Array) {
 		var frag = document.createDocumentFragment();
 		var i = n.length;
 		while (i--) {
+			_applyAttribs(n[i]);
 			frag.appendChild(n[i].clone(true));
 		}
 		_add(frag);

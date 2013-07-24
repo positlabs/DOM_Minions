@@ -10,8 +10,8 @@
 	var nodeProto = Node.prototype;
 	var nodeListProto = NodeList.prototype;
 
-	nodeProto.add = nodeListProto.add = function (node) {
-		return dom.add(node, this);
+	nodeProto.add = nodeListProto.add = function (node, attributes) {
+		return dom.add(node, this, attributes);
 	};
 
 	/**
@@ -67,7 +67,7 @@
 		this.addEventListener(DOWN, function (e) {
 			timer = setTimeout(function () {
 				callback(e)
-			}, 100);
+			}, waitMillis);
 		});
 
 		this.addEventListener(MOVE, function () {
@@ -85,7 +85,7 @@
 	/**
 	 *  listens to an event once
 	 */
-	nodeProto.one = nodeListProto.one = function (eventName, callback) {
+	nodeProto.once = nodeListProto.once = function (eventName, callback) {
 		var me = this;
 		this.on(eventName, function () {
 			me.off(eventName);

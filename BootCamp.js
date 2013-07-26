@@ -64,13 +64,13 @@
 		waitMillis = waitMillis || 100;
 		var timer;
 
-		this.addEventListener(DOWN, function (e) {
+		this.addEventListener(Mouse.DOWN, function (e) {
 			timer = setTimeout(function () {
 				callback(e)
 			}, waitMillis);
 		});
 
-		this.addEventListener(MOVE, function () {
+		this.addEventListener(Mouse.MOVE, function () {
 			clearTimeout(timer);
 		});
 

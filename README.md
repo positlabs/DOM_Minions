@@ -16,11 +16,11 @@ Various methods for dom manipulation. It's very flexible - most methods will acc
 dom("#hello");
 
 // makes a header tag with some text in it
-var knight = dom.create("h1", "I'm a knight!");
+var knight = dom.tag("h1", "I'm a knight!");
 knight.id = "arthur"
 
 // wraps the knight in some armor
-var armor = dom.create("div", knight);
+var armor = dom.tag("div", knight);
 
 // add armored knight to the battlefield (document.body)
 dom.add(armor);

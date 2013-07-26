@@ -36,7 +36,7 @@ dom = function (selector, optInNode) {
  *  @arg attributes: json-format of attributes to add to the tag
  *  @return: the newly created element
  */
-dom.create = function (tagName, content, attributes) {
+dom.tag = function (tagName, content, attributes) {
 	var el = document.createElement(tagName);
 	if (content) {
 
@@ -153,7 +153,7 @@ dom.add = function (node, toNode, attributes) {
 dom.insert = function (node, index, toNode) {
 	var to = toNode || document.body, n;
 	typeof to == "string" ? to = dom(to) : false;
-	typeof node == "string" ? n = dom.create(node) : n = node;
+	typeof node == "string" ? n = dom.tag(node) : n = node;
 	return to.insertBefore(n, to.childNodes[index]);
 };
 
@@ -193,7 +193,7 @@ dom.Fragment = function (optNodes) {
 	var frag = document.createDocumentFragment();
 	if (optNodes) {
 		if (typeof optNodes == "string") {
-			var div = dom.create("div", optNodes);
+			var div = dom.tag("div", optNodes);
 			optNodes = div.childNodes;
 		}
 

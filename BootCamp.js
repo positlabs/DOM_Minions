@@ -85,12 +85,13 @@
 	/**
 	 *  listens to an event once
 	 */
-	nodeProto.once = nodeListProto.once = function (eventName, callback) {
+	nodeProto.once = nodeListProto.one = function (eventName, callback) {
 		var me = this;
-		this.on(eventName, function () {
-			me.off(eventName);
-			callback();
-		});
+		this.on(eventName, onEvt);
+		function onEvt() {
+			me.off(eventName, onEvt);
+			callback()
+		}
 	};
 
 	/**

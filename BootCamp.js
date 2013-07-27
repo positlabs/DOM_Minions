@@ -7,17 +7,17 @@
 
 (function () {
 
-	var nodeProto = Node.prototype;
-	var nodeListProto = NodeList.prototype;
+	var _Node = Node.prototype;
+	var _NodeList = NodeList.prototype;
 
-	nodeProto.add = nodeListProto.add = function (node, attributes) {
+	_Node.add = _NodeList.add = function (node, attributes) {
 		return dom.add(node, this, attributes);
 	};
 
 	/**
 	 *  @arg node: node to remove. if unspecified, remove this node
 	 */
-	nodeProto.rm = nodeListProto.rm = function (node) {
+	_Node.rm = _NodeList.rm = function (node) {
 		if (node) {
 			return dom.rm(node, this);
 		} else {
@@ -25,18 +25,18 @@
 		}
 	};
 
-	nodeProto.insert = function (node, index) {
+	_Node.insert = function (node, index) {
 		return dom.insert(node, index, this);
 	};
 
-	nodeProto.clone = nodeListProto.clone = function (deep) {
+	_Node.clone = _NodeList.clone = function (deep) {
 		return dom.clone(this, deep);
 	};
 
 	/**
 	 *  query a selector on this node
 	 */
-	nodeProto.find = function (selectorString) {
+	_Node.find = function (selectorString) {
 		return dom(selectorString, this);
 	};
 
@@ -45,14 +45,14 @@
 	 *  supports space-delimited event lists
 	 *  @example: node.on("click touchstart", func)
 	 */
-	nodeProto.on = function (eventName, callback) {
+	_Node.on = function (eventName, callback) {
 		var events = eventName.split(" ");
 		var i = events.length;
 		while (i--) {
 			this.addEventListener(events[i], callback);
 		}
 	};
-	nodeListProto.on = function (eventName, callback) {
+	_NodeList.on = function (eventName, callback) {
 		var i = this.length;
 		while (i--) {
 			this[i].on(eventName, callback);
@@ -61,10 +61,10 @@
 
 	/**
 	 *  tap listener gets fired only if move event isn't detected within 100ms
-	 *  @arg waitMills (optional): time allowed to detect move event that will cancel touchstart. default 100ms
+	 *  @arg waitMills (optional): time allowed to detect move event that will cancel touchstart. default 300ms
 	 */
-	nodeProto.tap = function (callback, waitMillis) {
-		waitMillis = waitMillis || 100;
+	_Node.tap = function (callback, waitMillis) {
+		waitMillis = waitMillis || 300;
 		var timer;
 
 		this.addEventListener(Mouse.DOWN, function (e) {
@@ -79,7 +79,7 @@
 
 	};
 
-	nodeListProto.tap = function (callback) {
+	_NodeList.tap = function (callback) {
 		for (var i = 0, maxi = this.length; i < maxi; i++) {
 			this[i].tap(callback);
 		}
@@ -88,7 +88,7 @@
 	/**
 	 *  listens to an event once
 	 */
-	nodeProto.once = nodeListProto.one = function (eventName, callback) {
+	_Node.once = _NodeList.one = function (eventName, callback) {
 		var me = this;
 		this.on(eventName, onEvt);
 		function onEvt() {
@@ -100,7 +100,7 @@
 	/**
 	 *  remove an event listener
 	 */
-	nodeProto.off = function (eventName, callback) {
+	_Node.off = function (eventName, callback) {
 		var events = eventName.split(" ");
 		var i = events.length;
 		while (i--) {
@@ -111,7 +111,7 @@
 	/**
 	 *  remove an event listener
 	 */
-	nodeListProto.off = function (eventName, callback) {
+	_NodeList.off = function (eventName, callback) {
 		var i = this.length;
 		while (i--) {
 			this[i].off(eventName, callback);
@@ -122,13 +122,13 @@
 	 *   modify node style with a style object
 	 *   {left:0, top:"200px"}
 	 */
-	nodeProto.css = function (styleObject) {
+	_Node.css = function (styleObject) {
 		for (var s in styleObject) {
 			this.style[s] = styleObject[s];
 		}
 	};
 
-	nodeListProto.css = function (styleObject) {
+	_NodeList.css = function (styleObject) {
 		for (var i = 0, maxi = this.length; i < maxi; i++) {
 			for (var s in styleObject) {
 				this[i].style[s] = styleObject[s];
@@ -139,7 +139,7 @@
 	/**
 	 *  check if a node exists in a nodelist
 	 */
-	nodeListProto.contains = function (node) {
+	_NodeList.contains = function (node) {
 		for (var i = 0, maxi = this.length; i < maxi; i++) {
 			if (node == this[i]) return true;
 		}

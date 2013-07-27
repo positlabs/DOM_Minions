@@ -33,6 +33,9 @@
 		return dom.clone(this, deep);
 	};
 
+	/**
+	 *  query a selector on this node
+	 */
 	nodeProto.find = function (selectorString) {
 		return dom(selectorString, this);
 	};
@@ -116,20 +119,31 @@
 	};
 
 	/**
-	*   modify node style with a style object
-	*/
-	nodeProto.css = function(styleObject){
-		for(var s in styleObject){
+	 *   modify node style with a style object
+	 *   {left:0, top:"200px"}
+	 */
+	nodeProto.css = function (styleObject) {
+		for (var s in styleObject) {
 			this.style[s] = styleObject[s];
 		}
 	};
 
-	nodeListProto.css = function(styleObject){
+	nodeListProto.css = function (styleObject) {
 		for (var i = 0, maxi = this.length; i < maxi; i++) {
-			for(var s in styleObject){
+			for (var s in styleObject) {
 				this[i].style[s] = styleObject[s];
 			}
 		}
+	};
+
+	/**
+	 *  check if a node exists in a nodelist
+	 */
+	nodeListProto.contains = function (node) {
+		for (var i = 0, maxi = this.length; i < maxi; i++) {
+			if (node == this[i]) return true;
+		}
+		return false;
 	};
 
 })();

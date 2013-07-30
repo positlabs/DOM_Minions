@@ -66,13 +66,13 @@
 	_Node.tap = function (callback, waitMillis) {
 		waitMillis = waitMillis || 300;
 		var timer;
-
 		this.addEventListener(Mouse.DOWN, function (e) {
+			var target = this;
 			timer = setTimeout(function () {
+				e.tapTarget = target;
 				callback(e)
 			}, waitMillis);
 		});
-
 		this.addEventListener(Mouse.MOVE, function () {
 			clearTimeout(timer);
 		});

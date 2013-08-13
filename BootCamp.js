@@ -60,32 +60,6 @@
 	};
 
 	/**
-	 *  tap listener gets fired only if move event isn't detected within 100ms
-	 *  @arg waitMills (optional): time allowed to detect move event that will cancel touchstart. default 300ms
-	 */
-	_Node.tap = function (callback, waitMillis) {
-		waitMillis = waitMillis || 300;
-		var timer;
-		this.addEventListener(Mouse.DOWN, function (e) {
-			var target = this;
-			timer = setTimeout(function () {
-				e.tapTarget = target;
-				callback(e)
-			}, waitMillis);
-		});
-		this.addEventListener(Mouse.MOVE, function () {
-			clearTimeout(timer);
-		});
-
-	};
-
-	_NodeList.tap = function (callback) {
-		for (var i = 0, maxi = this.length; i < maxi; i++) {
-			this[i].tap(callback);
-		}
-	};
-
-	/**
 	 *  listens to an event once
 	 */
 	_Node.once = _NodeList.one = function (eventName, callback) {

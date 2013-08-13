@@ -157,6 +157,11 @@ dom.insert = function (node, index, toNode) {
 	return to.insertBefore(n, to.childNodes[index]);
 };
 
+dom.contains = function(selector, inNode){
+	var parent = document || inNode;
+	return parent.querySelectorAll(selector).length > 0;
+};
+
 /**
  *  @arg node: can be a selector string, Node or NodeList
  *  @arg deep: optional. defaults to true. determines if Node/s will be deep copies or not

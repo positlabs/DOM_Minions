@@ -1,8 +1,9 @@
 dom = dom || {};
 dom.Mouse = new (function () {
 
+	this.CLICK = "click";
+
 	if (window.navigator.msPointerEnabled) {
-		this.CLICK = "MSPointerDown";
 		this.DOWN = "MSPointerDown";
 		this.UP = "MSPointerUp";
 		this.MOVE = "MSPointerMove";
@@ -11,7 +12,6 @@ dom.Mouse = new (function () {
 		this.CANCEL = "MSPointerCancel";
 
 	} else if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
-		this.CLICK = "touchstart";
 		this.DOWN = "touchstart";
 		this.UP = "touchend";
 		this.MOVE = "touchmove";
@@ -20,7 +20,6 @@ dom.Mouse = new (function () {
 		this.CANCEL = "touchcancel";
 
 	} else {
-		this.CLICK = "click";
 		this.DOWN = "mousedown";
 		this.UP = "mouseup";
 		this.MOVE = "mousemove";

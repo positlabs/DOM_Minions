@@ -34,10 +34,10 @@
 	};
 
 	/**
-	 *  query a selector on this node
+	 *  query a selector on this node, or find a child
 	 */
-	_Node.find = function (selectorString) {
-		return dom(selectorString, this);
+	_Node.find = function (node) {
+		dom.find(node, this);
 	};
 
 	/**
@@ -113,7 +113,7 @@
 	/**
 	 *  check if a node exists in a nodelist
 	 */
-	_NodeList.contains = function (node) {
+	_NodeList.find = function (node) {
 		for (var i = 0, maxi = this.length; i < maxi; i++) {
 			if (node == this[i]) return true;
 		}

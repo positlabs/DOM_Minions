@@ -7,8 +7,12 @@
 
 (function () {
 
-	var _Node = Node.prototype;
-	var _NodeList = NodeList.prototype;
+	if(typeof Node == "undefined"){
+		Node = Element;
+	}
+
+	var _Node = {};//Node.prototype;
+	var _NodeList = {};//NodeList.prototype;
 
 	_Node.add = _NodeList.add = function (node, attributes) {
 		return dom.add(node, this, attributes);
@@ -37,7 +41,7 @@
 	 *  query a selector on this node, or find a child
 	 */
 	_Node.find = function (node) {
-		dom.find(node, this);
+		return dom.find(node, this);
 	};
 
 	/**
@@ -119,5 +123,20 @@
 		}
 		return false;
 	};
+
+	//TODO - merge functions in proto objects with hosts
+
+	function merge(hostObj, newObj){
+		for(var f in newObj){
+			hostObj[f] = newObj[f];
+		}
+	}
+
+	merge(Node.prototype, _Node);
+	merge(NodeList.prototype, _NodeList);
+
+	if(typeof StaticNodeList != "undefined"){
+		merge(StaticNodeList.prototype, _NodeList);
+	}
 
 })();

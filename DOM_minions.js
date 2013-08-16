@@ -84,7 +84,7 @@ var dom;
 		if (n instanceof Node) {
 			_rm(n);
 			return n;
-		} else if (n instanceof NodeList || n instanceof Array) {
+		} else if (n instanceof NodeList || n instanceof Array || n instanceof StaticNodeList) {
 			var i = n.length;
 			while (i--) {
 				_rm(n[i]);
@@ -164,11 +164,10 @@ var dom;
 
 	dom.find = function (node, inNode) {
 		var inNode = inNode || document;
-
 		if (typeof node == "string") {
 			var targ = dom._(node, inNode);
-			return targ ? targ : false;
-		} else if (inNode.contains(node)) {
+			return targ;
+		} else if (inNode.querySelector(node) != undefined) {
 			return node;
 		} else return false;
 

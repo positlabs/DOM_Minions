@@ -1,0 +1,1 @@
+java -jar compiler.jar --js ../src/dom.js ../src/extend.js ../src/Mouse.js --js_output_file ../bin/dom.min.js

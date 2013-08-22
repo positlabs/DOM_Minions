@@ -7,8 +7,26 @@
 
 (function () {
 
-	if(typeof Node == "undefined"){
+	// hack for undefined Node in IE8
+	if (typeof Node == "undefined") {
 		Node = Element;
+	}
+
+	var listen, unlisten;
+	if (typeof window.attachEvent != "undefined") {
+		listen = function (el, evt, callback) {
+			el.attachEvent("on" + evt, callback);
+		};
+		unlisten = function (el, evt, callback) {
+			el.detachEvent("on" + evt, callback);
+		};
+	} else {
+		listen = function (el, evt, callback) {
+			el.addEventListener(evt, callback);
+		};
+		unlisten = function (el, evt, callback) {
+			el.removeEventListener(evt, callback);
+		};
 	}
 
 	var _Node = {};//Node.prototype;
@@ -48,12 +66,17 @@
 	 *  convenience methods for adding event listeners to Elements
 	 *  supports space-delimited event lists
 	 *  @example: node.on("click touchstart", func)
+	 *
+	 *  @arg eventNames: space delimited list, or array of events
 	 */
-	_Node.on = function (eventName, callback) {
-		var events = eventName.split(" ");
+	_Node.on = window.on = function (eventNames, callback) {
+		var events;
+		if(typeof events == "string") events = eventNames.split(" ");
+		else if(eventNames instanceof Array)events = eventNames;
+
 		var i = events.length;
 		while (i--) {
-			this.addEventListener(events[i], callback);
+			listen(this, events[i], callback);
 		}
 	};
 	_NodeList.on = function (eventName, callback) {
@@ -66,23 +89,26 @@
 	/**
 	 *  listens to an event once
 	 */
-	_Node.once = _NodeList.one = function (eventName, callback) {
+	_Node.once = window.once = _NodeList.once = function (eventName, callback) {
 		var me = this;
 		this.on(eventName, onEvt);
-		function onEvt() {
+		function onEvt(e) {
 			me.off(eventName, onEvt);
-			callback()
+			callback(e);
 		}
 	};
 
 	/**
 	 *  remove an event listener
 	 */
-	_Node.off = function (eventName, callback) {
-		var events = eventName.split(" ");
+	_Node.off = window.off = function (eventName, callback) {
+		var events;
+		if(typeof events == "string") events = eventNames.split(" ");
+		else if(eventNames instanceof Array)events = eventNames;
+
 		var i = events.length;
 		while (i--) {
-			this.removeEventListener(events[i], callback);
+			unlisten(this, events[i], callback);
 		}
 	};
 
@@ -124,18 +150,27 @@
 		return false;
 	};
 
-	//TODO - merge functions in proto objects with hosts
+	_Node.each = function(func){
+		func(this);
+	};
 
-	function merge(hostObj, newObj){
-		for(var f in newObj){
+	_NodeList.each = function(func){
+		for (var i = 0, maxi = this.length; i < maxi; i++) {
+		  func(this[i]);
+		}
+	};
+
+	function merge(hostObj, newObj) {
+		for (var f in newObj) {
 			hostObj[f] = newObj[f];
 		}
 	}
 
 	merge(Node.prototype, _Node);
+	merge(Element.prototype, _Node);
 	merge(NodeList.prototype, _NodeList);
 
-	if(typeof StaticNodeList != "undefined"){
+	if (typeof StaticNodeList != "undefined") {
 		merge(StaticNodeList.prototype, _NodeList);
 	}
 

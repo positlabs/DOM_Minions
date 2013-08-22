@@ -10,17 +10,17 @@ var dom;
 
 	/**
 	 *  @arg selector: selector string
-	 *  @arg optInNode: optional Node to search in. defaults to document.body
+	 *  @arg context: optional context to search in. defaults to document.body
 	 *  @return: Node or NodeList
 	 */
-	dom = function (selector, optInNode) {
-		var rtn = dom._(selector, optInNode);
+	dom = function (selector, context) {
+		var rtn = dom._(selector, context);
 		if (typeof rtn == "undefined")console.warn(selector, "not found in document");
 		return rtn;
 	};
 
 	// privately used, doesn't throw a warning when node isn't found
-	dom._ = function(selector, optInNode){
+	dom._ = function (selector, optInNode) {
 		var inNode;
 		if (typeof optInNode == "string") {
 			inNode = document.querySelectorAll(optInNode);
@@ -68,6 +68,13 @@ var dom;
 	 *  @return: Node or NodeList that was removed
 	 */
 	dom.rm = function (node, fromNode) {
+		//TODO - make this more like a polyfill so we can use dom.remove. Should be simple, but something
+		// was overriding it last time. maybe due to .remove being a function of Element.prototype and not Node.prototype ?
+		// test on element context.
+
+		// var el = dom("#element").remove();
+		// console.log(el); // must not be undefined!
+
 		var parent = fromNode || document.body,
 			n = typeof node == "string" ? dom._(node, fromNode) : node;
 
@@ -219,4 +226,14 @@ var dom;
 		}
 		return frag;
 	};
+
+	//TODO - make this more flexible, maybe
+	dom.stringify = function (xmlNode) {
+		if (typeof window.XMLSerializer != "undefined") {
+			return (new window.XMLSerializer()).serializeToString(xmlNode);
+		} else if (typeof xmlNode.xml != "undefined") {
+			return xmlNode.xml;
+		}
+		return "";
+	}
 })();

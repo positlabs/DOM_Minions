@@ -1,5 +1,4 @@
-dom = dom || {};
-dom.Mouse = new (function () {
+Mouse = new (function () {
 
 	this.CLICK = "click";
 

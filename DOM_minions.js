@@ -67,13 +67,7 @@ var dom;
 	 *  @arg toNode: optional, removes node from this element. defaults to document.body. Can be a node or a single-element selector string.
 	 *  @return: Node or NodeList that was removed
 	 */
-	dom.rm = function (node, fromNode) {
-		//TODO - make this more like a polyfill so we can use dom.remove. Should be simple, but something
-		// was overriding it last time. maybe due to .remove being a function of Element.prototype and not Node.prototype ?
-		// test on element context.
-
-		// var el = dom("#element").remove();
-		// console.log(el); // must not be undefined!
+	dom.remove = function (node, fromNode) {
 
 		var parent = fromNode || document.body,
 			n = typeof node == "string" ? dom._(node, fromNode) : node;

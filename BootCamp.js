@@ -39,11 +39,11 @@
 	/**
 	 *  @arg node: node to remove. if unspecified, remove this node
 	 */
-	_Node.rm = _NodeList.rm = function (node) {
+	_Node.remove = _NodeList.remove = function (node) {
 		if (node) {
-			return dom.rm(node, this);
+			return dom.remove(node, this);
 		} else {
-			return dom.rm(this);
+			return dom.remove(this);
 		}
 	};
 

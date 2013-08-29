@@ -1,11 +1,11 @@
-DOM_Minions
+Dominion
 ==========
-Makes minions from ordinary DOM elements; Good for conquering the internet. Simple selector queries, event handling, and dom manipulation.
+Good for conquering the internet. Simple selector queries, event handling, and dom manipulation.
 
 Documentation is in-line. Look at the code for details.
 
 
-DOM_Minions.js
+dom.*
 ==========
 
 Various methods for dom manipulation. It's very flexible - most methods will accept selector strings, Nodes, NodeLists, or Arrays of Nodes as arguments.
@@ -37,11 +37,10 @@ dom.remove('#arthur', armor);
 
 ```
 
-BootCamp.js
+Extending Elements
 ==========
 
-Include this file if you want to train existing Nodes / NodeLists to become DOM minions. It extends the prototypes with methods in DOM_Minions.js.
-Also adds some methods for event handling
+Dominion extends the Node / NodeList / Element prototypes, with dom manipulation and event handling
 
 ```javascript
 

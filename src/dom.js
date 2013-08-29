@@ -82,10 +82,10 @@ var dom;
 			parent = dom._(parent);
 		}
 
-		if (n instanceof Node) {
+		if (dom.isNode(n)) {
 			_rm(n);
 			return n;
-		} else if (n instanceof NodeList || n instanceof Array || n instanceof StaticNodeList) {
+		} else if (dom.isNodeList(n) || n instanceof Array) {
 			var i = n.length;
 			while (i--) {
 				_rm(n[i]);
@@ -128,7 +128,7 @@ var dom;
 		}
 
 		// if it's a dom element, just add it
-		if (n instanceof Node) {
+		if (dom.isNode(n)) {
 			_add(n);
 			_applyAttribs(n);
 			return n;
@@ -137,7 +137,7 @@ var dom;
 			_add(n);
 			_applyAttribs(n);
 			return n;
-		} else if (n instanceof NodeList || n instanceof Array) {
+		} else if (dom.isNodeList(n) || n instanceof Array) {
 			var frag = document.createDocumentFragment();
 			var i = n.length;
 			while (i--) {
@@ -186,9 +186,9 @@ var dom;
 
 		typeof node == "string" ? node = dom._(node) : false;
 
-		if (node instanceof Node) {
+		if (dom.isNode(node)) {
 			return node.cloneNode(deep);
-		} else if (node instanceof NodeList) {
+		} else if (dom.isNodeList(node)) {
 
 			var frag = document.createDocumentFragment();
 			var i = node.length;
@@ -229,5 +229,27 @@ var dom;
 			return xmlNode.xml;
 		}
 		return "";
+	};
+
+	/**
+	 *  stupid IE8 hack for instanceof Element throwing an error instead of returning false
+	 * */
+	dom.isNode = function(n){
+		var isNode = false;
+		try{
+			isNode = n instanceof Node;
+		}catch(e){
+		}
+		return isNode;
+	};
+
+	dom.isNodeList = function(n){
+		var isNodeList = false;
+		try{
+			isNodeList = n instanceof NodeList || n instanceof StaticNodeList;
+		}catch(e){
+		}
+		return isNodeList;
 	}
+
 })();

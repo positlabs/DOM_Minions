@@ -71,7 +71,7 @@
 	 */
 	_Node.on = window.on = function (eventNames, callback) {
 		var events;
-		if(typeof events == "string") events = eventNames.split(" ");
+		if(typeof eventNames == "string") events = eventNames.split(" ");
 		else if(eventNames instanceof Array)events = eventNames;
 
 		var i = events.length;
@@ -79,21 +79,21 @@
 			listen(this, events[i], callback);
 		}
 	};
-	_NodeList.on = function (eventName, callback) {
+	_NodeList.on = function (eventNames, callback) {
 		var i = this.length;
 		while (i--) {
-			this[i].on(eventName, callback);
+			this[i].on(eventNames, callback);
 		}
 	};
 
 	/**
 	 *  listens to an event once
 	 */
-	_Node.once = window.once = _NodeList.once = function (eventName, callback) {
+	_Node.once = window.once = _NodeList.once = function (eventNames, callback) {
 		var me = this;
-		this.on(eventName, onEvt);
+		this.on(eventNames, onEvt);
 		function onEvt(e) {
-			me.off(eventName, onEvt);
+			me.off(eventNames, onEvt);
 			callback(e);
 		}
 	};
@@ -101,9 +101,9 @@
 	/**
 	 *  remove an event listener
 	 */
-	_Node.off = window.off = function (eventName, callback) {
+	_Node.off = window.off = function (eventNames, callback) {
 		var events;
-		if(typeof events == "string") events = eventNames.split(" ");
+		if(typeof eventNames == "string") events = eventNames.split(" ");
 		else if(eventNames instanceof Array)events = eventNames;
 
 		var i = events.length;
@@ -115,10 +115,10 @@
 	/**
 	 *  remove an event listener
 	 */
-	_NodeList.off = function (eventName, callback) {
+	_NodeList.off = function (eventNames, callback) {
 		var i = this.length;
 		while (i--) {
-			this[i].off(eventName, callback);
+			this[i].off(eventNames, callback);
 		}
 	};
 

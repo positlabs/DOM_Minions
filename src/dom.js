@@ -5,27 +5,20 @@
  *  @see: Node object documentation - http://www.w3schools.com/jsref/dom_obj_node.asp
  *
  */
-var dom;
-(function () {
+define(["tags"], function (tags) {
+	console.log("tags",tags);
 
 	/**
 	 *  @arg selector: selector string
 	 *  @arg context: optional context to search in. defaults to document.body
 	 *  @return: Node or NodeList
 	 */
-	dom = function (selector, context) {
-		var rtn = dom._(selector, context);
-		if (typeof rtn == "undefined")console.warn(selector, "not found in document");
-		return rtn;
-	};
-
-	// privately used, doesn't throw a warning when node isn't found
-	dom._ = function (selector, optInNode) {
+	var dom = function (selector, context) {
 		var inNode;
-		if (typeof optInNode == "string") {
-			inNode = document.querySelectorAll(optInNode);
+		if (typeof context == "string") {
+			inNode = document.querySelectorAll(context);
 		} else {
-			inNode = optInNode || document;
+			inNode = context || document;
 		}
 		var result = inNode.querySelectorAll(selector),
 			rtn;
@@ -41,25 +34,7 @@ var dom;
 	 *  @arg attributes: json-format of attributes to add to the tag
 	 *  @return: the newly created element
 	 */
-	dom.tag = function (tagName, content, attributes) {
-		var el = document.createElement(tagName);
-		if (content) {
-
-			if (typeof content == "string") {
-				el.innerHTML = content;
-			} else {
-				el.appendChild(content);
-			}
-		}
-
-		if (attributes) {
-			for (var a in attributes) {
-				el.setAttribute(a, attributes[a]);
-			}
-		}
-
-		return el;
-	};
+	dom.tag = tags.tag;
 
 	/**
 	 *  removes the node from the dom
@@ -70,7 +45,7 @@ var dom;
 	dom.remove = function (node, fromNode) {
 
 		var parent = fromNode || document.body,
-			n = typeof node == "string" ? dom._(node, fromNode) : node;
+			n = typeof node == "string" ? dom(node, fromNode) : node;
 
 		function _rm(_n) {
 			if (parent.contains(_n)) {
@@ -79,7 +54,7 @@ var dom;
 		}
 
 		if (typeof parent == "string") {
-			parent = dom._(parent);
+			parent = dom(parent);
 		}
 
 		if (dom.isNode(n)) {
@@ -116,7 +91,7 @@ var dom;
 		}
 
 		if (typeof parent == "string") {
-			parent = dom._(parent);
+			parent = dom(parent);
 		}
 
 		function _applyAttribs(el) {
@@ -158,7 +133,7 @@ var dom;
 	 */
 	dom.insert = function (node, index, toNode) {
 		var to = toNode || document.body, n;
-		typeof to == "string" ? to = dom._(to) : false;
+		typeof to == "string" ? to = dom(to) : false;
 		typeof node == "string" ? n = dom.tag(node) : n = node;
 		return to.insertBefore(n, to.childNodes[index]);
 	};
@@ -166,7 +141,7 @@ var dom;
 	dom.find = function (node, inNode) {
 		var inNode = inNode || document;
 		if (typeof node == "string") {
-			var targ = dom._(node, inNode);
+			var targ = dom(node, inNode);
 			return targ;
 		} else if (inNode.querySelector(node) != undefined) {
 			return node;
@@ -184,7 +159,7 @@ var dom;
 			deep = true;
 		}
 
-		typeof node == "string" ? node = dom._(node) : false;
+		typeof node == "string" ? node = dom(node) : false;
 
 		if (dom.isNode(node)) {
 			return node.cloneNode(deep);
@@ -250,6 +225,15 @@ var dom;
 		}catch(e){
 		}
 		return isNodeList;
+	};
+
+	function merge(hostObj, newObj) {
+		for (var f in newObj) {
+			hostObj[f] = newObj[f];
+		}
 	}
 
-})();
+	merge(dom, tags);
+
+	return dom;
+});

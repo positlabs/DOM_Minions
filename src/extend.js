@@ -5,11 +5,11 @@
  *
  */
 
-(function () {
+define(["dom", "tags"], function (dom) {
 
 	// hack for undefined Node in IE8
-	if (typeof Node == "undefined") {
-		Node = Element;
+	if (typeof window.Node == "undefined") {
+		window.Node = window.Element;
 	}
 
 	var listen, unlisten;
@@ -166,12 +166,12 @@
 		}
 	}
 
-	merge(Node.prototype, _Node);
-	merge(Element.prototype, _Node);
-	merge(NodeList.prototype, _NodeList);
+	merge(window.Node.prototype, _Node);
+	merge(window.Element.prototype, _Node);
+	merge(window.NodeList.prototype, _NodeList);
 
-	if (typeof StaticNodeList != "undefined") {
-		merge(StaticNodeList.prototype, _NodeList);
+	if (typeof window.StaticNodeList != "undefined") {
+		merge(window.StaticNodeList.prototype, _NodeList);
 	}
 
-})();
+});

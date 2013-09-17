@@ -1,30 +1,33 @@
-Mouse = new (function () {
+define(function () {
 
-	this.CLICK = "click";
+	var Mouse = {};
+	Mouse.CLICK = "click";
 
 	if (window.navigator.msPointerEnabled) {
-		this.DOWN = "MSPointerDown";
-		this.UP = "MSPointerUp";
-		this.MOVE = "MSPointerMove";
-		this.OVER = "MSPointerOver";
-		this.OUT = "MSPointerOut";
-		this.CANCEL = "MSPointerCancel";
+		Mouse.DOWN = "MSPointerDown";
+		Mouse.UP = "MSPointerUp";
+		Mouse.MOVE = "MSPointerMove";
+		Mouse.OVER = "MSPointerOver";
+		Mouse.OUT = "MSPointerOut";
+		Mouse.CANCEL = "MSPointerCancel";
 
 	} else if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
-		this.DOWN = "touchstart";
-		this.UP = "touchend";
-		this.MOVE = "touchmove";
-		this.OVER = "mouseover"; // no equivalent
-		this.OUT = "touchleave";
-		this.CANCEL = "touchcancel";
+		Mouse.DOWN = "touchstart";
+		Mouse.UP = "touchend";
+		Mouse.MOVE = "touchmove";
+		Mouse.OVER = "mouseover"; // no equivalent
+		Mouse.OUT = "touchleave";
+		Mouse.CANCEL = "touchcancel";
 
 	} else {
-		this.DOWN = "mousedown";
-		this.UP = "mouseup";
-		this.MOVE = "mousemove";
-		this.OVER = "mouseover";
-		this.OUT = "mouseout";
-		this.CANCEL = "mousecancel"; // non-existent
+		Mouse.DOWN = "mousedown";
+		Mouse.UP = "mouseup";
+		Mouse.MOVE = "mousemove";
+		Mouse.OVER = "mouseover";
+		Mouse.OUT = "mouseout";
+		Mouse.CANCEL = "mousecancel"; // non-existent
 	}
 
-})();
+	return Mouse;
+
+});
